@@ -1,0 +1,13 @@
+com\banquito\core\branches\config\MongoConfig.class
+com\banquito\core\branches\BranchesApplication.class
+com\banquito\core\branches\config\MongoConfig$1.class
+com\banquito\core\branches\controller\dto\BranchRQRS.class
+com\banquito\core\branches\config\MongoConfig$2.class
+com\banquito\core\branches\service\BranchService.class
+com\banquito\core\branches\controller\BranchController.class
+com\banquito\core\branches\repository\BranchRepository.class
+com\banquito\core\branches\config\ApplicationValues.class
+com\banquito\core\branches\controller\dto\BranchRQRS$BranchRQRSBuilder.class
+com\banquito\core\branches\exception\CRUDException.class
+com\banquito\core\branches\controller\mapper\BranchMapper.class
+com\banquito\core\branches\model\Branch.class
