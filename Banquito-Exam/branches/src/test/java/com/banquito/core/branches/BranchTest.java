@@ -143,46 +143,35 @@ public void testLookByCode() {
 
 @Test
 public void testCreate() throws CRUDException {
-    // Paso 1: Crear un objeto Branch para usar en la prueba
     Branch branch = new Branch();
     branch.setId("1");
     branch.setCode("001");
     branch.setName("Branch 1");
 
-    // Paso 2: Crear un objeto mock del repositorio de Branch usando Mockito
     BranchRepository branchRepository = Mockito.mock(BranchRepository.class);
 
-    // Paso 3: Crear una instancia de su servicio de Spring Boot, pasando el objeto mock del repositorio como parámetro
     BranchService branchService = new BranchService(branchRepository);
 
-    // Paso 4: Configurar el comportamiento del objeto mock del repositorio para que no haga nada cuando se llame al método save()
     Mockito.when(branchRepository.save(branch)).thenReturn(branch);
 
-    // Paso 5: Llamar al método create() del servicio
     branchService.create(branch);
 
-    // Paso 6: Verificar que el método save() del objeto mock del repositorio se llamó exactamente una vez con el objeto Branch creado en el Paso 1
     Mockito.verify(branchRepository, Mockito.times(1)).save(branch);
 }
 
 @Test
 public void testCreateExcepcion() {
-    // Paso 1: Crear un objeto Branch para usar en la prueba
     Branch branch = new Branch();
     branch.setId("1");
     branch.setCode("001");
     branch.setName("Branch 1");
 
-    // Paso 2: Crear un objeto mock del repositorio de Branch usando Mockito
     BranchRepository branchRepository = Mockito.mock(BranchRepository.class);
 
-    // Paso 3: Configurar el comportamiento del objeto mock del repositorio para que lance una excepción cuando se llame al método save()
     Mockito.doThrow(new RuntimeException("Error en el repositorio")).when(branchRepository).save(branch);
 
-    // Paso 4: Crear una instancia de su servicio de Spring Boot, pasando el objeto mock del repositorio como parámetro
     BranchService branchService = new BranchService(branchRepository);
 
-    // Paso 5: Llamar al método create() del servicio y verificar que lanza una excepción CRUDException con el mensaje de error esperado
     Exception exception = assertThrows(CRUDException.class, () -> {
         branchService.create(branch);
     });
@@ -191,70 +180,52 @@ public void testCreateExcepcion() {
 
 @Test
 public void testUpdate() throws CRUDException {
-    // Paso 1: Crear un objeto Branch para usar en la prueba
     Branch branch = new Branch();
     branch.setCode("001");
     branch.setName("Branch 1");
 
-    // Paso 2: Crear un objeto mock del repositorio de Branch usando Mockito
     BranchRepository branchRepository = Mockito.mock(BranchRepository.class);
 
-    // Paso 3: Configurar el comportamiento del objeto mock del repositorio para que devuelva el objeto Branch creado anteriormente cuando se llame al método findByCode()
     Mockito.when(branchRepository.findByCode(branch.getCode())).thenReturn(branch);
 
-    // Paso 4: Crear una instancia de su servicio de Spring Boot, pasando el objeto mock del repositorio como parámetro
     BranchService branchService = new BranchService(branchRepository);
 
-    // Paso 5: Llamar al método update() del servicio
     String code = "001";
     Branch branchToUpdate = new Branch();
     branchToUpdate.setName("Updated Branch 1");
     branchService.update(code, branchToUpdate);
 
-    // Paso 6: Verificar que el método findByCode() del objeto mock del repositorio se llamó exactamente una vez con el mismo parámetro que se pasó al método update() del servicio
     Mockito.verify(branchRepository, Mockito.times(1)).findByCode(code);
 
-    // Paso 7: Verificar que se llamó al método save() del objeto mock del repositorio con el objeto Branch actualizado
     Mockito.verify(branchRepository, Mockito.times(1)).save(branch);
 
-    // Paso 8: Verificar que el nombre del objeto Branch se actualizó correctamente
     assertEquals("Updated Branch 1", branch.getName());
 }
 
 @Test
 public void testUpdateExcepxion() throws CRUDException {
-    // Paso 1: Crear un objeto Branch para usar en la prueba
     Branch branch = new Branch();
     branch.setId("1");
     branch.setCode("001");
     branch.setName("Branch 1");
 
-    // Paso 2: Crear un objeto mock del repositorio de Branch usando Mockito
     BranchRepository branchRepository = Mockito.mock(BranchRepository.class);
 
-    // Paso 3: Configurar el comportamiento del objeto mock del repositorio para que devuelva el objeto Branch creado anteriormente cuando se llame al método findByCode()
     Mockito.when(branchRepository.findByCode(branch.getCode())).thenReturn(branch);
 
-    // Paso 4: Crear una instancia de su servicio de Spring Boot, pasando el objeto mock del repositorio como parámetro
     BranchService branchService = new BranchService(branchRepository);
 
-    // Paso 5: Crear un objeto Branch con los datos a actualizar
     Branch updatedBranch = new Branch();
     updatedBranch.setName("Branch Updated");
 
-    // Paso 6: Llamar al método update() del servicio con los datos a actualizar
     branchService.update(branch.getCode(), updatedBranch);
 
-    // Paso 7: Verificar que el método findByCode() del objeto mock del repositorio se llamó exactamente una vez
     Mockito.verify(branchRepository, Mockito.times(1)).findByCode(branch.getCode());
 
-    // Paso 8: Verificar que el objeto Branch devuelto por el método findByCode() del objeto mock del repositorio tiene el nuevo nombre
     assertEquals(updatedBranch.getName(), branch.getName());
 
-    // Paso 9: Verificar que el método save() del objeto mock del repositorio se llamó exactamente una vez
     Mockito.verify(branchRepository, Mockito.times(1)).save(branch);
 
-    // Paso 10: Verificar que el método update() del servicio lanza una excepción CRUDException si se intenta actualizar un objeto Branch que no existe
     Branch nonExistingBranch = new Branch();
     nonExistingBranch.setCode("002");
     Mockito.when(branchRepository.findByCode(nonExistingBranch.getCode())).thenReturn(null);
