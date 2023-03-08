@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BranchMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">branches</a> &gt; <a href="index.source.html" class="el_package">com.banquito.core.branches.controller.mapper</a> &gt; <span class="el_source">BranchMapper.java</span></div><h1>BranchMapper.java</h1><pre class="source lang-java linenums">package com.banquito.core.branches.controller.mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.banquito.core.branches.controller.dto.BranchRQRS;
+import com.banquito.core.branches.model.Branch;
+
+<span class="nc" id="L9">public class BranchMapper {</span>
+    
+    public static BranchRQRS mapToBranchRQRS(Branch branch) {
+<span class="fc" id="L12">        return BranchRQRS.builder()</span>
+<span class="fc" id="L13">            .id(branch.getId())</span>
+<span class="fc" id="L14">            .code(branch.getCode())</span>
+<span class="fc" id="L15">            .name(branch.getName()).build();</span>
+    }
+
+    public static List&lt;BranchRQRS&gt; mapToList(List&lt;Branch&gt; branches) {
+<span class="fc" id="L19">        List&lt;BranchRQRS&gt; branchesRQRS = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (branches!=null) {</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            for (Branch branch : branches) {</span>
+<span class="fc" id="L22">                branchesRQRS.add(mapToBranchRQRS(branch));</span>
+<span class="fc" id="L23">            }</span>
+        }
+<span class="fc" id="L25">        return branchesRQRS;</span>
+    }
+
+    public static Branch mapToBranch(BranchRQRS branchRQRS) {
+<span class="fc" id="L29">        Branch branch = new Branch();</span>
+<span class="fc" id="L30">        branch.setId(branchRQRS.getId());</span>
+<span class="fc" id="L31">        branch.setCode(branchRQRS.getCode());</span>
+<span class="fc" id="L32">        branch.setName(branchRQRS.getName());</span>
+<span class="fc" id="L33">        return branch;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
