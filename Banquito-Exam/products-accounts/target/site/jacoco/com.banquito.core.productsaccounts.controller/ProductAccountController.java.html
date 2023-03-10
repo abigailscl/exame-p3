@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductAccountController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">products-accounts</a> &gt; <a href="index.source.html" class="el_package">com.banquito.core.productsaccounts.controller</a> &gt; <span class="el_source">ProductAccountController.java</span></div><h1>ProductAccountController.java</h1><pre class="source lang-java linenums">package com.banquito.core.productsaccounts.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.banquito.core.productsaccounts.controller.dto.ProductAccountRQRS;
+import com.banquito.core.productsaccounts.controller.mapper.ProductAccountMapper;
+import com.banquito.core.productsaccounts.exception.CRUDException;
+import com.banquito.core.productsaccounts.model.ProductAccount;
+import com.banquito.core.productsaccounts.service.ProductAccountService;
+
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L21">@Slf4j</span>
+@RestController
+@RequestMapping(&quot;/api/v1/productsaccounts&quot;)
+public class ProductAccountController {
+    
+    private final ProductAccountService service;
+
+<span class="fc" id="L28">    public ProductAccountController(ProductAccountService service) {</span>
+<span class="fc" id="L29">        this.service = service;</span>
+<span class="fc" id="L30">    }</span>
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;ProductAccountRQRS&gt;&gt; obtainAll() {
+<span class="fc" id="L34">        log.info(&quot;Going to return all active products accounts&quot;);</span>
+<span class="fc" id="L35">        List&lt;ProductAccount&gt; productAccounts = this.service.listAllActives();</span>
+<span class="fc" id="L36">        log.info(&quot;Returning {} active products accounts&quot;, productAccounts.size());</span>
+<span class="fc" id="L37">        return ResponseEntity.ok(ProductAccountMapper.mapToList(productAccounts)); </span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;ProductAccountRQRS&gt; obtainByCode(@PathVariable(name = &quot;id&quot;) String id) {
+<span class="fc" id="L42">        log.info(&quot;Going to find product account by id: {}&quot;, id);</span>
+<span class="fc" id="L43">        ProductAccount productAccount = this.service.obtainById(id);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (productAccount!=null) {</span>
+<span class="fc" id="L45">            return ResponseEntity.ok(ProductAccountMapper.mapToProductAccountRQRS(productAccount));</span>
+        } else {
+<span class="fc" id="L47">            return ResponseEntity.notFound().build();</span>
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;?&gt; create(@RequestBody ProductAccountRQRS productAccount) {
+        try {
+<span class="fc" id="L54">            log.info(&quot;Going to create a product account with info: {}&quot;, productAccount);</span>
+<span class="fc" id="L55">            this.service.create(ProductAccountMapper.mapToProductAccount(productAccount));</span>
+<span class="fc" id="L56">            return ResponseEntity.ok().build();</span>
+<span class="fc" id="L57">        } catch (CRUDException e) {</span>
+<span class="fc" id="L58">            log.error(&quot;Error at create product account: {}&quot;, e.getMessage(), e);</span>
+<span class="fc" id="L59">            return ResponseEntity.badRequest().build();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

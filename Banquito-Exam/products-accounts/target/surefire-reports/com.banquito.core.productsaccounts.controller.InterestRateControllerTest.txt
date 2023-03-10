@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.banquito.core.productsaccounts.controller.InterestRateControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.094 s - in com.banquito.core.productsaccounts.controller.InterestRateControllerTest

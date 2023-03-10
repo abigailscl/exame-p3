@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductAccount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">products-accounts</a> &gt; <a href="index.source.html" class="el_package">com.banquito.core.productsaccounts.model</a> &gt; <span class="el_source">ProductAccount.java</span></div><h1>ProductAccount.java</h1><pre class="source lang-java linenums">package com.banquito.core.productsaccounts.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = &quot;PRODUCT_ACCOUNT&quot;)
+<span class="pc bpc" id="L17" title="50 of 70 branches missed.">@Data</span>
+<span class="fc" id="L18">@NoArgsConstructor</span>
+public class ProductAccount {
+    
+    @Id
+    @Column(name = &quot;ID_PRODUCT_ACCOUNT&quot;, nullable = false)
+<span class="fc" id="L23">    private String id;</span>
+    @Column(name = &quot;NAME&quot;, length = 50, nullable = false)
+<span class="fc" id="L25">    private String name;</span>
+    @Column(name = &quot;DESCRIPTION&quot;, length = 500, nullable = false)
+<span class="fc" id="L27">    private String description;</span>
+    @Column(name = &quot;MINIMUN_BALANCE&quot;, precision = 4, scale=2, nullable = false)
+<span class="fc" id="L29">    private BigDecimal minimunBalance;</span>
+    @Column(name = &quot;PAY_INTEREST&quot;, length = 1, nullable = false)
+<span class="fc" id="L31">    private String payInterest;</span>
+    @Column(name = &quot;ACCEPTS_CHECKS&quot;, length = 1, nullable = false)
+<span class="fc" id="L33">    private String acceptsChecks;</span>
+    @Column(name = &quot;STATE&quot;, length = 3, nullable = false)
+<span class="fc" id="L35">    private String state;</span>
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = &quot;CREATION_DATE&quot;, nullable = false)
+<span class="fc" id="L38">    private Date creationDate;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InterestRateService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">products-accounts</a> &gt; <a href="index.source.html" class="el_package">com.banquito.core.productsaccounts.service</a> &gt; <span class="el_source">InterestRateService.java</span></div><h1>InterestRateService.java</h1><pre class="source lang-java linenums">package com.banquito.core.productsaccounts.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.banquito.core.productsaccounts.exception.CRUDException;
+import com.banquito.core.productsaccounts.model.InterestRate;
+import com.banquito.core.productsaccounts.repository.InterestRateRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L15">@Slf4j</span>
+@Service
+public class InterestRateService {
+
+    private final InterestRateRepository repository;
+
+<span class="fc" id="L21">    public InterestRateService(InterestRateRepository repository) {</span>
+<span class="fc" id="L22">        this.repository = repository;</span>
+<span class="fc" id="L23">    }</span>
+
+    public List&lt;InterestRate&gt; listAllActives() {
+<span class="fc" id="L26">        log.info(&quot;Obtaining all active interest rate records&quot;);</span>
+<span class="fc" id="L27">        List&lt;InterestRate&gt; rates = this.repository.findByState(&quot;ACT&quot;);</span>
+<span class="fc" id="L28">        log.debug(&quot;Returning {} interest rates records&quot;, rates.size());</span>
+<span class="fc" id="L29">        return rates;</span>
+    }
+
+    public InterestRate obtainById(Integer id) {
+<span class="fc" id="L33">        log.info(&quot;Looking interest rate by id: {}&quot;, id);</span>
+<span class="fc" id="L34">        Optional&lt;InterestRate&gt; interestRateOpt = this.repository.findById(id);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (!interestRateOpt.isPresent()) {</span>
+<span class="fc" id="L36">            throw new CRUDException(404, &quot;Interest Rate with id: {&quot; + id + &quot;} does not exist&quot;);</span>
+        } else {
+<span class="fc" id="L38">            return interestRateOpt.get();</span>
+        }
+    }
+
+    public void create(InterestRate interestRate) throws CRUDException {
+        try {
+<span class="fc" id="L44">            log.info(&quot;Creating interest rate with the following info: {}&quot;, interestRate);</span>
+<span class="fc" id="L45">            this.repository.save(interestRate);</span>
+<span class="fc" id="L46">            log.debug(&quot;Interest rate created with the following info: {}&quot;, interestRate);</span>
+<span class="fc" id="L47">        } catch (Exception e) {</span>
+<span class="fc" id="L48">            log.error(&quot;Error in interest rate creation: {}, with data: {}&quot;, e.getMessage(), interestRate);</span>
+<span class="fc" id="L49">            throw new CRUDException(510, &quot;Interest Rate cannot be created, error:&quot; + e.getMessage(), e);</span>
+<span class="fc" id="L50">        }</span>
+<span class="fc" id="L51">    }</span>
+
+    public void update(Integer id, InterestRate interestRate) throws CRUDException {
+        try {
+<span class="fc" id="L55">            log.info(&quot;Going to update Interest Rate with id: {} &quot;, id);</span>
+<span class="fc" id="L56">            log.debug(&quot;Going to update Interest Rate with id: {} with the following data {}&quot;, id, interestRate);</span>
+<span class="fc" id="L57">            Optional&lt;InterestRate&gt; interestRateOpt = this.repository.findById(id);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (!interestRateOpt.isPresent()) {</span>
+<span class="fc" id="L59">                throw new CRUDException(404, &quot;Interest Rate with id: {&quot; + id + &quot;} does not exist&quot;);</span>
+            }
+<span class="fc" id="L61">            InterestRate interestRateTmp = interestRateOpt.get();</span>
+<span class="fc" id="L62">            interestRateTmp.setName(interestRate.getName());</span>
+<span class="fc" id="L63">            interestRateTmp.setInterestRate(interestRate.getInterestRate());</span>
+<span class="fc" id="L64">            this.repository.save(interestRateTmp);</span>
+<span class="fc" id="L65">            log.debug(&quot;Interest Rate with id: {} has been updated with the following info {}&quot;, id, interestRateTmp);</span>
+<span class="fc" id="L66">        } catch (Exception e) {</span>
+<span class="fc" id="L67">            log.error(&quot;Error when try to update Interest Rate: {}, with the following info: {}&quot;, e.getMessage(),</span>
+                    interestRate);
+<span class="fc" id="L69">            throw new CRUDException(520, &quot;Interest Rate cannot be updated, error:&quot; + e.getMessage(), e);</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">    }</span>
+
+    public void inactivate(Integer id) {
+        try {
+<span class="fc" id="L75">            log.info(&quot;Going to inactivate Interest Rate with id: {} &quot;, id);</span>
+<span class="fc" id="L76">            Optional&lt;InterestRate&gt; interestRateOpt = this.repository.findById(id);</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if (!interestRateOpt.isPresent()) {</span>
+<span class="nc" id="L78">                throw new CRUDException(404, &quot;Interest Rate with id: {&quot; + id + &quot;} does not exist&quot;);</span>
+            }
+<span class="fc" id="L80">            InterestRate interestRateTmp = interestRateOpt.get();</span>
+<span class="fc" id="L81">            interestRateTmp.setState(&quot;INA&quot;);</span>
+<span class="fc" id="L82">            interestRateTmp.setEnd(new Date());</span>
+<span class="fc" id="L83">            this.repository.save(interestRateTmp);</span>
+<span class="fc" id="L84">            log.debug(&quot;Interest Rate with id: {} has been inactivated with the following info {}&quot;, id, interestRateTmp);</span>
+<span class="nc" id="L85">        } catch (Exception e) {</span>
+<span class="nc" id="L86">            log.error(&quot;Error when try to inactivate Interest Rate: {}, with id: {}&quot;, e.getMessage(), id);</span>
+<span class="nc" id="L87">            throw new CRUDException(530, &quot;Interest Rate cannot be inactivated, error:&quot; + e.getMessage(), e);</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
