@@ -1,0 +1,16 @@
+com\banquito\core\productsaccounts\model\InterestRate.class
+com\banquito\core\productsaccounts\controller\dto\InterestRateRQRS.class
+com\banquito\core\productsaccounts\controller\InterestRateController.class
+com\banquito\core\productsaccounts\model\ProductAccount.class
+com\banquito\core\productsaccounts\service\ProductAccountService.class
+com\banquito\core\productsaccounts\controller\dto\ProductAccountRQRS.class
+com\banquito\core\productsaccounts\repository\ProductAccountRepository.class
+com\banquito\core\productsaccounts\controller\ProductAccountController.class
+com\banquito\core\productsaccounts\ProductsAccountsApplication.class
+com\banquito\core\productsaccounts\controller\dto\InterestRateRQRS$InterestRateRQRSBuilder.class
+com\banquito\core\productsaccounts\controller\mapper\ProductAccountMapper.class
+com\banquito\core\productsaccounts\repository\InterestRateRepository.class
+com\banquito\core\productsaccounts\controller\dto\ProductAccountRQRS$ProductAccountRQRSBuilder.class
+com\banquito\core\productsaccounts\exception\CRUDException.class
+com\banquito\core\productsaccounts\service\InterestRateService.class
+com\banquito\core\productsaccounts\controller\mapper\InterestRateMapper.class

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.banquito.core.branches.controller.BranchControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.471 s - in com.banquito.core.branches.controller.BranchControllerTest

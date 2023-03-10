@@ -1,0 +1,5 @@
+com\banquito\core\productsaccounts\controller\InterestRateControllerTest.class
+com\banquito\core\productsaccounts\service\ProductAccountTest.class
+com\banquito\core\productsaccounts\service\InterestServiceTest.class
+com\banquito\core\productsaccounts\controller\ProductAccountControllerTest.class
+com\banquito\core\productsaccounts\ProductsAccountsApplicationTests.class

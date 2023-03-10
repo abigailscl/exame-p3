@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MongoConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">branches</a> &gt; <a href="index.source.html" class="el_package">com.banquito.core.branches.config</a> &gt; <span class="el_source">MongoConfig.java</span></div><h1>MongoConfig.java</h1><pre class="source lang-java linenums">package com.banquito.core.branches.config;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+
+import org.bson.types.Decimal128;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+
+@Configuration
+<span class="nc" id="L22">public class MongoConfig extends AbstractMongoClientConfiguration {</span>
+
+    @Autowired
+    private ApplicationValues appValues;
+
+    @Override
+    protected String getDatabaseName() {
+<span class="nc" id="L29">        return appValues.getMongoDB();</span>
+    }
+
+    @Override
+    public MongoClient mongoClient() {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (&quot;1&quot;.equals(appValues.getMongoAut())) {</span>
+<span class="nc" id="L35">            return MongoClients.create(&quot;mongodb://&quot; + appValues.getMongoUsr() + &quot;:&quot; + appValues.getMongoPwd() + &quot;@&quot;</span>
+<span class="nc" id="L36">                    + appValues.getMongoHost() + &quot;:27017/&quot; + appValues.getMongoDB() + &quot;?authSource=admin&quot;);</span>
+        } else {
+<span class="nc" id="L38">            return MongoClients.create(&quot;mongodb://&quot; + appValues.getMongoHost() + &quot;:49156/&quot; + appValues.getMongoDB());</span>
+        }
+    }
+
+    @Override
+    public boolean autoIndexCreation() {
+<span class="nc" id="L44">        return true;</span>
+    }
+
+    @Bean
+    @Override
+    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory databaseFactory,
+            MongoCustomConversions customConversions, MongoMappingContext mappingContext) {
+<span class="nc" id="L51">        MappingMongoConverter converter = super.mappingMongoConverter(databaseFactory, customConversions,</span>
+                mappingContext);
+<span class="nc" id="L53">        converter.setTypeMapper(new DefaultMongoTypeMapper(null));</span>
+<span class="nc" id="L54">        return converter;</span>
+    }
+
+    /**
+     * Inject a CustomConversions bean to overwrite the default mapping of
+     * BigDecimal.
+     *
+     * @return a new instance of CustomConversons
+     */
+    @Bean
+    @Override
+    public MongoCustomConversions customConversions() {
+<span class="nc" id="L66">        Converter&lt;Decimal128, BigDecimal&gt; decimal128ToBigDecimal = new Converter&lt;&gt;() {</span>
+            @Override
+            public BigDecimal convert(Decimal128 s) {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                return s == null ? null : s.bigDecimalValue();</span>
+            }
+        };
+
+<span class="nc" id="L73">        Converter&lt;BigDecimal, Decimal128&gt; bigDecimalToDecimal128 = new Converter&lt;&gt;() {</span>
+            @Override
+            public Decimal128 convert(BigDecimal s) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                return s == null ? null : new Decimal128(s);</span>
+            }
+        };
+
+<span class="nc" id="L80">        return new MongoCustomConversions(Arrays.asList(decimal128ToBigDecimal, bigDecimalToDecimal128));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
